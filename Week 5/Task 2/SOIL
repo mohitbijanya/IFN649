@@ -1,10 +1,13 @@
 #include <SoftwareSerial.h>
 
-#define SOILPIN 21      // Digital pin connected to the DHT sensor
+#define SOILPIN 21      
 int val = 0; //value for storing moisture value 
 int soilPower = 7;//Variable for Soil moisture Power
 
 #define LEDPIN 11
+#define LEDPINGREEN 1
+#define LEDPINYELLOW 2
+#define LEDPINRED 3
 
 // Teensy 5V <--> HC-05 Vcc
 // Teensy Ground <--> HC-05 GND
@@ -19,12 +22,17 @@ void setup() {
   pinMode(soilPower, OUTPUT);//Set D7 as an OUTPUT
   digitalWrite(soilPower, LOW);//Set to LOW so no power is flowing through the sensor
 
+  pinMode(LEDPINRED, OUTPUT);
+  pinMode(LEDPINYELLOW, OUTPUT);
+  pinMode(LEDPINGREEN, OUTPUT);
+
   // Setup Serial1 for BlueTooth
   Serial1.begin(9600); // Default communication rate of the Bluetooth module
 }
 
 void loop() {
-  if(Serial1.available() > 0){ // Checks whether data is comming from the serial port
+  if(Serial1.available() > 0)
+  { // Checks whether data is comming from the serial port
     digitalWrite(LEDPIN, HIGH);
     
     Serial.print("Soil Moisture = ");
@@ -35,16 +43,35 @@ void loop() {
     
     delay(1000);
     digitalWrite(LEDPIN, LOW);
+
+    if(readSoil() < 1)
+    {
+      digitalWrite(LEDPINRED, HIGH);
+      digitalWrite(LEDPINYELLOW, LOW);
+      digitalWrite(LEDPINGREEN, LOW);
+    }
+    else if(readSoil() >= 1 && readSoil() <= 50)
+    {
+      digitalWrite(LEDPINRED, LOW);
+      digitalWrite(LEDPINYELLOW, HIGH);
+      digitalWrite(LEDPINGREEN, LOW);
+    }
+    else if(readSoil()>50)
+    {
+      digitalWrite(LEDPINRED, LOW);
+      digitalWrite(LEDPINYELLOW, LOW);
+      digitalWrite(LEDPINGREEN, HIGH);
+    }
+    
     delay(1000);
  }
 }
 
 int readSoil()
 {
-
-    digitalWrite(soilPower, HIGH);//turn D7 "On"
-    delay(10);//wait 10 milliseconds 
-    val = analogRead(SOILPIN);//Read the SIG value form sensor 
-    digitalWrite(soilPower, LOW);//turn D7 "Off"
-    return val;//send current moisture value
+  digitalWrite(soilPower, HIGH);//turn D7 "On"
+  delay(10);//wait 10 milliseconds 
+  val = analogRead(SOILPIN);//Read the SIG value form sensor 
+  digitalWrite(soilPower, LOW);//turn D7 "Off"
+  return val;//send current moisture value
 }
