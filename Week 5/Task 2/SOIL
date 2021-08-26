@@ -1,18 +1,18 @@
 #include <SoftwareSerial.h>
 
-#define SOILPIN 21      
-int val = 0; //value for storing moisture value 
-int soilPower = 7;//Variable for Soil moisture Power
+#define SOILPIN 20      
+int val = 0;
+int soilPower = 7;
 
 #define LEDPIN 11
 #define LEDPINGREEN 1
 #define LEDPINYELLOW 2
 #define LEDPINRED 3
 
-// Teensy 5V <--> HC-05 Vcc
-// Teensy Ground <--> HC-05 GND
+
 #define rxPin 7 // Teensy pin 7 <--> HC-05 Tx
 #define txPin 8 // Teensy pin 8 <--> HC-05 Rx
+
 SoftwareSerial BTSerial =  SoftwareSerial(rxPin, txPin);
 
 void setup() {
@@ -40,9 +40,6 @@ void loop() {
     //get soil moisture value from the function below and print it
     Serial.println(readSoil());
     Serial1.println(readSoil());
-    
-    delay(1000);
-    digitalWrite(LEDPIN, LOW);
 
     if(readSoil() < 1)
     {
@@ -63,6 +60,8 @@ void loop() {
       digitalWrite(LEDPINGREEN, HIGH);
     }
     
+    delay(1000);
+    digitalWrite(LEDPIN, LOW); 
     delay(1000);
  }
 }
