@@ -31,46 +31,44 @@ void setup() {
 }
 
 void loop() {
-  if(Serial1.available() > 0)
-  { // Checks whether data is comming from the serial port
-    digitalWrite(LEDPIN, HIGH);
+  digitalWrite(LEDPIN, HIGH);
     
-    Serial.print("Soil Moisture = ");
-    Serial1.println("Soil Moisture = ");    
-    //get soil moisture value from the function below and print it
-    Serial.println(readSoil());
-    Serial1.println(readSoil());
+  displaySoil();
 
-    if(readSoil() < 1)
-    {
-      digitalWrite(LEDPINRED, HIGH);
-      digitalWrite(LEDPINYELLOW, LOW);
-      digitalWrite(LEDPINGREEN, LOW);
-    }
-    else if(readSoil() >= 1 && readSoil() <= 50)
-    {
-      digitalWrite(LEDPINRED, LOW);
-      digitalWrite(LEDPINYELLOW, HIGH);
-      digitalWrite(LEDPINGREEN, LOW);
-    }
-    else if(readSoil()>50)
-    {
-      digitalWrite(LEDPINRED, LOW);
-      digitalWrite(LEDPINYELLOW, LOW);
-      digitalWrite(LEDPINGREEN, HIGH);
-    }
-    
-    delay(1000);
-    digitalWrite(LEDPIN, LOW); 
-    delay(1000);
- }
+  if(displaySoil() < 1)
+  {
+    digitalWrite(LEDPINRED, HIGH);
+    digitalWrite(LEDPINYELLOW, LOW);
+    digitalWrite(LEDPINGREEN, LOW);
+  }
+  else if(displaySoil() >= 1 && displaySoil() <= 50)
+  {
+    digitalWrite(LEDPINRED, LOW);
+    digitalWrite(LEDPINYELLOW, HIGH);
+    digitalWrite(LEDPINGREEN, LOW);
+  }
+  else if(displaySoil()>50)
+  {
+    digitalWrite(LEDPINRED, LOW);
+    digitalWrite(LEDPINYELLOW, LOW);
+    digitalWrite(LEDPINGREEN, HIGH);
+  }
+  
+  delay(1000);
+  digitalWrite(LEDPIN, LOW); 
+  delay(1000);
 }
 
-int readSoil()
+int displaySoil()
 {
   digitalWrite(soilPower, HIGH);//turn D7 "On"
   delay(10);//wait 10 milliseconds 
   val = analogRead(SOILPIN);//Read the SIG value form sensor 
   digitalWrite(soilPower, LOW);//turn D7 "Off"
-  return val;//send current moisture value
+  
+  Serial1.println("Soil Moisture = ");
+  //get soil moisture value from the function below and print it
+  Serial1.println(val);
+
+  return val;
 }
