@@ -1,4 +1,3 @@
-#include <SoftwareSerial.h>
 #include "DHT.h"
 
 #define SOILPIN 20      
@@ -12,7 +11,6 @@ String component_componentStatus;
 #define DHTTYPE 11
 DHT dht(DHTPIN,DHTTYPE);
 
-#define LEDPIN 11
 #define LEDPINGREEN 1
 #define LEDPINYELLOW 2
 #define LEDPINRED 3
@@ -20,8 +18,6 @@ DHT dht(DHTPIN,DHTTYPE);
 
 #define rxPin 7 // Teensy pin 7 <--> HC-05 Tx
 #define txPin 8 // Teensy pin 8 <--> HC-05 Rx
-
-SoftwareSerial BTSerial =  SoftwareSerial(rxPin, txPin);
 
 void setup() {
   // Setup serial for monitor
@@ -46,8 +42,6 @@ void setup() {
 
 void loop() {
 
-  digitalWrite(LEDPIN, HIGH);
-  
   displaySoil();
   displayPhotores();
   displayDHT();
@@ -79,8 +73,6 @@ void loop() {
 
    
   }
-   delay(1000);
-   digitalWrite(LEDPIN, LOW); 
    delay(1000);
 }
 

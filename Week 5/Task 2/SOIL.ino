@@ -1,5 +1,3 @@
-#include <SoftwareSerial.h>
-
 #define SOILPIN 20      
 int val = 0;
 int soilPower = 7;
@@ -12,8 +10,6 @@ int soilPower = 7;
 
 #define rxPin 7 // Teensy pin 7 <--> HC-05 Tx
 #define txPin 8 // Teensy pin 8 <--> HC-05 Rx
-
-SoftwareSerial BTSerial =  SoftwareSerial(rxPin, txPin);
 
 void setup() {
   // Setup serial for monitor
