@@ -1,6 +1,4 @@
 #define SOILPIN 20      
-int val = 0;
-int soilPower = 7;
 
 #define LEDPIN 11
 #define LEDPINGREEN 1
@@ -15,15 +13,14 @@ void setup() {
   // Setup serial for monitor
   Serial.begin(9600); 
 
-  pinMode(soilPower, OUTPUT);//Set D7 as an OUTPUT
-  digitalWrite(soilPower, LOW);//Set to LOW so no power is flowing through the sensor
+  pinMode(SOILPIN, INPUT);
 
   pinMode(LEDPINRED, OUTPUT);
   pinMode(LEDPINYELLOW, OUTPUT);
   pinMode(LEDPINGREEN, OUTPUT);
 
   // Setup Serial1 for BlueTooth
-  Serial1.begin(9600); // Default communication rate of the Bluetooth module
+  Serial1.begin(9600);
 }
 
 void loop() {
@@ -57,14 +54,10 @@ void loop() {
 
 int displaySoil()
 {
-  digitalWrite(soilPower, HIGH);//turn D7 "On"
-  delay(10);//wait 10 milliseconds 
-  val = analogRead(SOILPIN);//Read the SIG value form sensor 
-  digitalWrite(soilPower, LOW);//turn D7 "Off"
+  val = analogRead(SOILPIN);
   
-  Serial1.println("Soil Moisture = ");
-  //get soil moisture value from the function below and print it
-  Serial1.println(val);
+  Serial1.print(("Soil Moisture = "));
+  Serial1.print(val);
 
   return val;
 }
