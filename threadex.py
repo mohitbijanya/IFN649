@@ -18,7 +18,7 @@ class ThdClass(Thread):
 
 def Thdfunction(name, stop):
 	while not stop():
-		print("Thread function")
+		print("Thread function" + name)
 		time.sleep(1)
 
 	print('Thread function done!!')
@@ -30,6 +30,9 @@ def main():
 	stop_thread = False
 	thdf = Thread(target=Thdfunction, args=('thdf', lambda: stop_thread))
 	thdf.start()
+
+	thdf1 = Thread(target=Thdfunction, args=('thdf1', lambda: stop_thread))
+	thdf1.start()
 	
 	try:
 		while True:

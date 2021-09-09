@@ -1,0 +1,81 @@
+from threading import Thread 
+import time
+import paho.mqtt.client as mqtt
+import serial
+import time
+import string
+
+ser = serial.Serial("/dev/rfcomm0", 9600)
+
+class ThdClass(Thread):
+	def __init__(self):
+		Thread.__init__(self)
+		self.mStop = False
+
+	def run(self):
+		while not self.mStop:
+			print("Thread class")
+			time.sleep(1)
+
+		print('Thread class done!!')
+			
+	def stop(self):
+		self.mStop = True
+
+def on_connect(topicname,client, userdata, flags, rc): # func for making connection
+ print("Connected to MQTT")
+ print("Connection returned result: " + str(rc) )
+ client.subscribe(topicname)
+
+def on_message(topicname, client, userdata, msg): # Func for Sending msg
+ print(msg.topic+" "+str(msg.payload))
+
+ if msg.topic == topicname:
+     msgRec = float(msg.payload.decode("utf-8"))
+     if msgRec > 50.0:
+        ser.write(str.encode('RedLed_ON\r\n'))
+     else:
+        ser.write(str.encode('RedLed_OFF\r\n'))
+
+def Thdfunction(name, stop):
+ client = mqtt.Client()
+ while not stop():
+    print("Thread function" + name)
+    client.on_connect = on_connect(topicname= name)
+    client.on_message = on_message(topicname= name)
+    client.connect("localhost", 1883, 60)
+    client.start()
+
+ print('Thread function done!!')
+ client.stop()
+
+def main():
+	thdc = ThdClass()
+	thdc.start()
+
+	stop_thread = False
+	thdf = Thread(target=Thdfunction, args=('thdf', lambda: stop_thread))
+	thdf.start()
+
+	thdf1 = Thread(target=Thdfunction, args=('thdf1', lambda: stop_thread))
+	thdf1.start()
+	
+	try:
+		while True:
+			cmd = input()
+			if(cmd =='q'):
+				print('stopping.....')
+				thdc.stop()
+				stop_thread = True
+				break;
+			print('Main Thread')
+
+	except KeyboardInterrupt:
+		thdc.stop()
+		stop_thread = True
+	finally:
+		thdf.join()
+		thdc.join()
+
+if __name__ == "__main__":
+	main()
