@@ -1,10 +1,6 @@
 #include "DHT.h"
 
 #define SOILPIN 20      
-int val = 0;
-int soilPower = 7;
-String component_componentStatus;
-
 #define PHOTOPIN 12
 
 #define DHTPIN 21
@@ -19,15 +15,14 @@ DHT dht(DHTPIN,DHTTYPE);
 #define rxPin 7 // Teensy pin 7 <--> HC-05 Tx
 #define txPin 8 // Teensy pin 8 <--> HC-05 Rx
 
+String component_componentStatus;
+
 void setup() {
   // Setup serial for monitor
   Serial.begin(9600); 
 
-  pinMode(soilPower, OUTPUT);//Set as an OUTPUT
-  digitalWrite(soilPower, LOW);//Set to LOW so no power is flowing through the sensor\
-
+  pinMode(SOILPIN, INPUT);
   pinMode(PHOTOPIN, INPUT);
-
   pinMode(DHTPIN, INPUT);
   dht.begin();
 
@@ -37,7 +32,7 @@ void setup() {
   pinMode(BUZZERPIN,OUTPUT);
 
   // Setup Serial1 for BlueTooth
-  Serial1.begin(9600); // Default communication rate of the Bluetooth module
+  Serial1.begin(9600);
 }
 
 void loop() {
@@ -78,10 +73,7 @@ void loop() {
 
 int displaySoil()
 {
-  digitalWrite(soilPower, HIGH);//turn D7 "On"
-  delay(10);//wait 10 milliseconds 
-  val = analogRead(SOILPIN);//Read the SIG value form sensor 
-  digitalWrite(soilPower, LOW);//turn D7 "Off"
+  val = analogRead(SOILPIN);
   
   Serial1.print(("Soil Moisture = "));
   Serial1.print(val);
