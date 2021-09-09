@@ -30,7 +30,7 @@ def main():
 	stop_thread = False
 	thdf = Thread(target=Thdfunction, args=('thdf', lambda: stop_thread))
 	thdf.start()
-
+	
 	try:
 		while True:
 			cmd = input()
