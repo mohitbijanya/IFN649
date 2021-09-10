@@ -49,6 +49,7 @@ def main():
 		stop_thread = True
 	finally:
 		thdf.join()
+		thdf1.join()
 		thdc.join()
 
 if __name__ == "__main__":
