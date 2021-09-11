@@ -1,11 +1,13 @@
-#define LEDPINRED 1
-#define LEDPINYELLOW 2
-#define LEDPINGREEN 3
+String component_componentStatus;
+
+#define LEDPINRED 10
+#define LEDPINYELLOW 9
+#define LEDPINGREEN 6
+
 
 #define rxPin 7 // Teensy pin 7 <--> HC-05 Tx
 #define txPin 8 // Teensy pin 8 <--> HC-05 Rx
 
-String component_componentStatus;
 
 void setup() {
   // Setup serial for monitor
@@ -20,10 +22,6 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(LEDPINRED, HIGH);
-  digitalWrite(LEDPINYELLOW, HIGH);
-  digitalWrite(LEDPINGREEN, HIGH);
-  
   if(Serial1.available() > 0)
   { // Checks whether data is comming from the serial port
     
@@ -39,16 +37,20 @@ void loop() {
     {
         digitalWrite(LEDPINRED, LOW);
     }
-    else if(component_componentStatus == "YellowLed_ON"){
+    if(component_componentStatus == "YellowLed_ON")
+    {
         digitalWrite(LEDPINYELLOW, HIGH);
     }
-    else if(component_componentStatus == "YellowLed_OFF"){
+    else if(component_componentStatus == "YellowLed_OFF")
+    {
         digitalWrite(LEDPINYELLOW, LOW);
     }
-    else if(component_componentStatus == "GreenLed_ON"){
+    if(component_componentStatus == "GreenLed_ON")
+    {
         digitalWrite(LEDPINGREEN, HIGH);
     }
-    else if(component_componentStatus == "GreenLed_OFF"){
+    else if(component_componentStatus == "GreenLed_OFF")
+    {
         digitalWrite(LEDPINGREEN, LOW);
     }
   }
