@@ -1,18 +1,53 @@
-import paho.mqtt.client as mqtt
+#!/bin/bash
 
+echo "Start Initialization"
 
-def on_connect(client, userdata, flags, rc): # func for making connection
- print("Connected to MQTT")
- print("Connection returned result: " + str(rc) )
- client.subscribe("soilmoisture")
- 
+echo "Installing linux extra"
+sudo amazon-linux-extras install -y epel
+if [ $? -eq 0 ]
+then
+    echo "Installation success"
+else
+    echo "Installation error"
+fi
 
-def on_message(client, userdata, msg): # Func for Sending msg
- print(msg.topic+" "+str(msg.payload))
+echo "Update yum packages"
+sudo yum update -y
+if [ $? -eq 0 ]
+then
+    echo "Update success"
+else
+    echo "Update error"
+fi
 
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
-print(on_message.msg.topic + "success")
-client.connect("172.31.20.137", 1883, 60)
-client.loop_forever()
+echo "Installing mosquitto"
+sudo yum install -y mosquitto
+if [ $? -eq 0 ]
+then
+    echo "Installation success"
+else
+    echo "Installation error"
+fi
+
+# Check installation
+mos=$(mosquitto -h)
+echo "Checking mosquitto installation"
+if [[ $mos == *"mosquitto version"* ]]
+then
+    echo "mosquitto installed"
+else
+    echo "mosquitto not installed"
+fi
+
+# Start mosquitto service
+sudo systemctl start mosquitto
+sudo systemctl enable mosquitto
+if [ $? -eq 0 ]
+then
+    echo "Starting mosquitto service success"
+else
+    echo "Starting mosquitto service error"
+fi
+
+# Start MQTT Client 
+mosquitto_sub -h localhost -t "test"
