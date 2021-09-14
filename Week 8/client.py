@@ -5,10 +5,6 @@ def on_connect(client, userdata, flags, rc): # func for making connection
  print("Connected to MQTT")
  print("Connection returned result: " + str(rc) )
  client.subscribe("soilmoisture")
- client.subscribe("photoresistor")
- client.subscribe("humidity")
- client.subscribe("temperature")
- client.subscribe("heatindex")
  
 
 def on_message(client, userdata, msg): # Func for Sending msg
