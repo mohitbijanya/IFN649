@@ -50,4 +50,6 @@ else
 fi
 
 # Start MQTT Client 
+echo "client set up start"
 mosquitto_sub -h localhost -t "test"
+echo "client set up done"
