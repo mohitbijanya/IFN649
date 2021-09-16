@@ -36,6 +36,8 @@ void displaySoil()
   
   Serial1.print(("SoilMoisture: "));
   Serial1.print(val);
+  Serial.print(("SoilMoisture: "));
+  Serial.print(val);
   
 }
 
@@ -44,6 +46,8 @@ void displayPhotores()
   float val = analogRead(PHOTOPIN);
   Serial1.print(" Photoresistor: ");
   Serial1.print(val);
+  Serial.print(" Photoresistor: ");
+  Serial.print(val);
 }
 
 void displayDHT()
@@ -53,13 +57,17 @@ void displayDHT()
 
   float hic = dht.computeHeatIndex(t, h, false);  
 
-  Serial1.print(F(" Humidity: "));
+  Serial1.print((" Humidity: "));
   Serial1.print(h);
-  Serial1.print(F("%  Temperature: "));
-  Serial1.print(t);
-  Serial1.print(F("C "));
-  Serial1.print(F(" Heatindex: "));
-  Serial1.print(hic);
-  Serial1.println(F("C "));
+  Serial1.print((" Temperature: "));
+  Serial1.println(t);
+
+
+  Serial.print((" Humidity: "));
+  Serial.print(h);
+  Serial.print((" Temperature: "));
+  Serial.println(t);
+
+
 }
 

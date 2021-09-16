@@ -1,8 +1,8 @@
 String component_componentStatus;
 
-#define LEDPINRED 10
-#define LEDPINYELLOW 9
-#define LEDPINGREEN 6
+#define LEDPINRED 1
+#define LEDPINYELLOW 2
+#define LEDPINGREEN 3
 
 
 #define rxPin 7 // Teensy pin 7 <--> HC-05 Tx

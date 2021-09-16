@@ -5,7 +5,7 @@ import serial
 import time
 import string
 
-ser = serial.Serial("/dev/rfcomm1", 9600)
+ser = serial.Serial("/dev/rfcomm3", 9600)
 
 class ThdClass(Thread):
 	def __init__(self):
@@ -14,7 +14,7 @@ class ThdClass(Thread):
 
 	def run(self):
 		while not self.mStop:
-			print("Thread class")
+			#print("Thread class")
 			time.sleep(1)
 
 		print('Thread class done!!')
@@ -28,23 +28,24 @@ def on_connect(client, userdata, flags, rc): # func for making connection
  client.subscribe(userdata)
  
 def on_message(client, userdata, msg): # Func for Sending msg
+ time.sleep(1)
  msgRec = float(msg.payload.decode("utf-8"))
  print(msg.topic + "="+ str(msgRec))
  if msg.topic == "soilmoisture":
      if msgRec > 50.00:
-        ser.write(str.encode('RedLed_ON\r\n'))
+        ser.write(str.encode('\nRedLed_ON\n'))
      else:
-        ser.write(str.encode('RedLed_OFF\r\n'))
+        ser.write(str.encode('\nRedLed_OFF\n'))
  elif msg.topic == "photoresistor":
      if msgRec > 50.00:
-        ser.write(str.encode('YellowLed_ON\r\n'))
+        ser.write(str.encode('\nYellowLed_ON\n'))
      else:
-        ser.write(str.encode('YellowLed_OFF\r\n'))
+        ser.write(str.encode('\nYellowLed_OFF\n'))
  elif msg.topic == "temperature":
      if msgRec > 25.00:
-        ser.write(str.encode('GreenLed_ON\r\n'))
+        ser.write(str.encode('\nGreenLed_ON\n'))
      else:
-        ser.write(str.encode('GreenLed_OFF\r\n'))
+        ser.write(str.encode('\nGreenLed_OFF\n')) 
 
 def Thdfunction(name, stop):
  client = mqtt.Client()
@@ -55,7 +56,7 @@ def Thdfunction(name, stop):
  client.loop_start()
  
  while not stop():
-    print("Thread function " + name + " ")
+    #print("Thread function " + name + " ")
     time.sleep(1)
     
  client.loop_stop()
@@ -73,6 +74,9 @@ def main():
  thdf1.start()
  
  thdf2 = Thread(target=Thdfunction, args=("temperature", lambda: stop_thread))
+ thdf2.start()
+ 
+ thdf2 = Thread(target=Thdfunction, args=("humidity", lambda: stop_thread))
  thdf2.start()
 
  try:
