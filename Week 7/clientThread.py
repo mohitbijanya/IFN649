@@ -36,12 +36,12 @@ def on_message(client, userdata, msg): # Func for Sending msg
         ser.write(str.encode('\nRedLed_ON\n'))
      else:
         ser.write(str.encode('\nRedLed_OFF\n'))
- elif msg.topic == "photoresistor":
+ if msg.topic == "photoresistor":
      if msgRec > 50.00:
         ser.write(str.encode('\nYellowLed_ON\n'))
      else:
         ser.write(str.encode('\nYellowLed_OFF\n'))
- elif msg.topic == "temperature":
+ if msg.topic == "temperature":
      if msgRec > 25.00:
         ser.write(str.encode('\nGreenLed_ON\n'))
      else:
@@ -76,8 +76,8 @@ def main():
  thdf2 = Thread(target=Thdfunction, args=("temperature", lambda: stop_thread))
  thdf2.start()
  
- thdf2 = Thread(target=Thdfunction, args=("humidity", lambda: stop_thread))
- thdf2.start()
+ thdf3 = Thread(target=Thdfunction, args=("humidity", lambda: stop_thread))
+ thdf3.start()
 
  try:
   while True:

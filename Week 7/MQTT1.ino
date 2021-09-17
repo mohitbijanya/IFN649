@@ -53,9 +53,7 @@ void displayPhotores()
 void displayDHT()
 {
   float h = dht.readHumidity();
-  float t = dht.readTemperature();
-
-  float hic = dht.computeHeatIndex(t, h, false);  
+  float t = dht.readTemperature(); 
 
   Serial1.print((" Humidity: "));
   Serial1.print(h);

@@ -25,12 +25,12 @@ def on_message(client, userdata, msg): # Func for Sending msg
          ser.write(str.encode('RedLed_ON\r\n'))
      else:
          ser.write(str.encode('RedLed_OFF\r\n'))
- elif msg.topic == "photoresistor":
+ if msg.topic == "photoresistor":
      if msgRec > 25.00:
         ser.write(str.encode('YellowLed_ON\r\n'))
      else:
         ser.write(str.encode('YellowLed_OFF\r\n'))
- elif msg.topic == "temperature":
+ if msg.topic == "temperature":
      if msgRec > 25.00:
         ser.write(str.encode('GreenLed_ON\r\n'))
      else:
