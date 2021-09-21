@@ -22,11 +22,10 @@ class ThdClass(Thread):
         ser.close()
 
 def Thdfunction(name,hostname, stop):
-	while not stop():
+    while not stop():
         if ser.in_waiting > 0:
             rawserial = ser.readline()
             cookedserial = rawserial.decode('utf-8').strip('\r\n')
-
             message = cookedserial.strip().split()
 
             if name == "soilmoisture":
@@ -48,16 +47,17 @@ def main():
 	thdc.start()
 
 	stop_thread = False
-	thdf = Thread(target=Thdfunction, args=('soilmoisture',"54.234.134.21", lambda: stop_thread))
+    host_name = "54.234.134.21"
+	thdf = Thread(target=Thdfunction, args=('soilmoisture', host_name, lambda: stop_thread))
 	thdf.start()
 
-    thdf1 = Thread(target=Thdfunction, args=('photoresistor',"54.234.134.21", lambda: stop_thread))
+    thdf1 = Thread(target=Thdfunction, args=('photoresistor', host_name, lambda: stop_thread))
 	thdf1.start()
 
-    thdf2 = Thread(target=Thdfunction, args=('humidity',"54.234.134.21", lambda: stop_thread))
+    thdf2 = Thread(target=Thdfunction, args=('humidity', host_name, lambda: stop_thread))
 	thdf2.start()
 
-    thdf3 = Thread(target=Thdfunction, args=('temperature',"54.234.134.21", lambda: stop_thread))
+    thdf3 = Thread(target=Thdfunction, args=('temperature', host_name, lambda: stop_thread))
 	thdf3.start()
 	
 	try:
