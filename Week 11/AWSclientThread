@@ -30,17 +30,21 @@ def on_connect(client, userdata, flags, rc): # func for making connection
 def on_message(client, userdata, msg): # Func for Sending msg
  msgRec = float(msg.payload.decode("utf-8"))
  print(msg.topic + "="+ str(msgRec))
- if msg.topic == "lpg":
-   print("lpg: " + msgRec)
- if msg.topic == "co":
-   print("co: " + msgRec)
- if msg.topic == "smoke":
-   print("smoke: " + msgRec)
- if msq.topic == "humidity":
-   print("humidty: " + msgRec)
+ if msg.topic == "soilmoisture":
+     if msgRec > 50.00:
+        ser.write(str.encode('RedLed_ON\r\n'))
+     else:
+        ser.write(str.encode('RedLed_OFF\r\n'))
+ if msg.topic == "photoresistor":
+     if msgRec > 50.00:
+        ser.write(str.encode('YellowLed_ON\r\n'))
+     else:
+        ser.write(str.encode('YellowLed_OFF\r\n'))
  if msg.topic == "temperature":
-   print("temp: " + msgRec)
-
+     if msgRec > 25.00:
+        ser.write(str.encode('GreenLed_ON\r\n'))
+     else:
+        ser.write(str.encode('GreenLed_OFF\r\n'))
 
 def Thdfunction(name,hostname, stop):
  client = mqtt.Client()
@@ -63,20 +67,14 @@ def main():
 
  stop_thread = False
  host_name = "54.234.134.21"
- thdf = Thread(target=Thdfunction, args=("lpg", host_name,lambda: stop_thread))
+ thdf = Thread(target=Thdfunction, args=("soilmoisture", host_name,lambda: stop_thread))
  thdf.start()
  
- thdf1 = Thread(target=Thdfunction, args=("co", host_name, lambda: stop_thread))
+ thdf1 = Thread(target=Thdfunction, args=("photoresistor", host_name, lambda: stop_thread))
  thdf1.start()
  
- thdf2 = Thread(target=Thdfunction, args=("smoke", host_name,lambda: stop_thread))
+ thdf2 = Thread(target=Thdfunction, args=("temperature", host_name,lambda: stop_thread))
  thdf2.start()
-
- thdf3 = Thread(target=Thdfunction, args=("humidity", host_name,lambda: stop_thread))
- thdf3.start()
-
- thdf4 = Thread(target=Thdfunction, args=("temperature", host_name,lambda: stop_thread))
- thdf4.start()
 
  try:
   while True:
@@ -95,8 +93,6 @@ def main():
      thdf.join()
      thdf1.join()
      thdf2.join()
-     thdf3.join()
-     thdf4.join()
      thdc.join()
 
 if __name__ == "__main__":
