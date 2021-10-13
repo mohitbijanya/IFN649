@@ -15,7 +15,7 @@ void setup() {
   // Setup serial for monitor
   Serial.begin(9600); 
 
-  pinmode(MQ2PIN, INPUT);
+  pinMode(MQ2PIN, INPUT);
   pinMode(DHTPIN, INPUT);
   dht.begin();
   mq2.begin();
@@ -30,7 +30,7 @@ void loop() {
   Serial.print(" ");
   displayDHT();
   Serial.println();
-  delay(3000);
+  delay(30000);
 }
 
 void displayDHT()

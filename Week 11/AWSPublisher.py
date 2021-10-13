@@ -1,4 +1,3 @@
-# havent been tried yet
 import paho.mqtt.publish as publish
 import serial
 import time
