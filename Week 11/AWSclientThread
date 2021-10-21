@@ -4,9 +4,6 @@ import paho.mqtt.client as mqtt
 import serial
 import time
 import string
-import blynklib
-
-blynk = blynklib.Blynk('G3zAPk6quYmDFXvp4ZKzMd6-txV38zKz')
 
 ser = serial.Serial("/dev/rfcomm1", 9600)
 
@@ -35,21 +32,18 @@ def on_connect(client, userdata, flags, rc): # func for making connection
 def on_message(client, userdata, msg): # Func for Sending msg
  msgRec = float(msg.payload.decode("utf-8"))
  print(msg.topic + "="+ str(msgRec))
- 
- 
-#  if msg.topic == "lpg":
-#    print("lpg: " + msgRec)
-#  if msg.topic == "co":
-#    print("co: " + msgRec)
-#  if msg.topic == "smoke":
-#    print("smoke: " + msgRec)
- if msq.topic == "humidity":
-   print("humidty: " + msgRec)
-   blynk.virtual_write(1, msgRec)
- if msg.topic == "temperature":
-   print("temp: " + msgRec)
-   blynk.virtual_write(0, msgRec)
+ if msg.topic == "lpg":
 
+ if msg.topic == "co":
+
+ if msg.topic == "smoke":
+    
+ if msg.topic == "humidity":
+     
+ if msg.topic == "temperature":
+
+ if msg.topic == "heatindex":
+     
 
 def Thdfunction(name,hostname, stop):
  client = mqtt.Client()
@@ -86,9 +80,11 @@ def main():
  thdf4 = Thread(target=Thdfunction, args=("temperature", host_name,lambda: stop_thread))
  thdf4.start()
 
+ thdf5 = Thread(target=Thdfunction, args=("heatindex", host_name,lambda: stop_thread))
+ thdf5.start()
+
  try:
   while True:
-   blynk.run()
    cmd = input()
    if(cmd =='q'):
      print('stopping.....')
@@ -106,8 +102,8 @@ def main():
      thdf2.join()
      thdf3.join()
      thdf4.join()
+     thdf5.join()
      thdc.join()
 
 if __name__ == "__main__":
     main()
-

@@ -27,26 +27,8 @@ void setup() {
 void loop() {
   
   displayMQ2();
-  Serial.print(" ");
   displayDHT();
-  Serial.println();
   delay(3000);
-}
-
-void displayDHT()
-{
-  float h = dht.readHumidity();
-  float t = dht.readTemperature(); 
-
-  Serial1.print(("Humidity: "));
-  Serial1.print(h);
-  Serial1.print((" Temperature: "));
-  Serial1.print(t);
-
-  Serial.print(("Humidity: "));
-  Serial.print(h);
-  Serial.print((" Temperature: "));
-  Serial.print(t);
 }
 
 void displayMQ2()
@@ -66,5 +48,27 @@ void displayMQ2()
    Serial.print(values[1], 3);
    Serial.print(" Smoke: ");
    Serial.print(values[2], 3);
+}
+
+void displayDHT()
+{
+  float h = dht.readHumidity();
+  float t = dht.readTemperature();
+  float f = dht.readTemperature(true);
+  float hic = dht.computeHeatIndex(t, h, false);
+
+  Serial1.print((" Humidity: "));
+  Serial1.print(h);
+  Serial1.print((" Temperature: "));
+  Serial1.print(t);
+  Serial1.print((" HeatIndex: "));
+  Serial1.println(hic);
+
+  Serial.print((" Humidity: "));
+  Serial.print(h);
+  Serial.print((" Temperature: "));
+  Serial.print(t);
+  Serial.print((" HeatIndex: "));
+  Serial.println(hic);
 }
 
