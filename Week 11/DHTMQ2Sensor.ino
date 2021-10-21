@@ -30,7 +30,7 @@ void loop() {
   Serial.print(" ");
   displayDHT();
   Serial.println();
-  delay(30000);
+  delay(3000);
 }
 
 void displayDHT()

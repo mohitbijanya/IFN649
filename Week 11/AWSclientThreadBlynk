@@ -10,6 +10,8 @@ blynk = blynklib.Blynk('G3zAPk6quYmDFXvp4ZKzMd6-txV38zKz')
 
 ser = serial.Serial("/dev/rfcomm1", 9600)
 
+host_name = "54.234.134.21"
+
 class ThdClass(Thread):
 	def __init__(self):
 		Thread.__init__(self)
@@ -69,7 +71,6 @@ def main():
  thdc.start()
 
  stop_thread = False
- host_name = "54.234.134.21"
  thdf = Thread(target=Thdfunction, args=("lpg", host_name,lambda: stop_thread))
  thdf.start()
  
