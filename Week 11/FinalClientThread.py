@@ -5,9 +5,9 @@ import serial
 import time
 import string
 
-ser = serial.Serial("/dev/rfcomm3", 9600)
+ser = serial.Serial("/dev/rfcomm1", 9600)
 
-host_name = "54.91.133.214"
+host_name = "34.229.92.150"
 
 class ThdClass(Thread):
 	def __init__(self):
@@ -33,25 +33,25 @@ def on_message(client, userdata, msg): # Func for Sending msg
  msgRec = float(msg.payload.decode("utf-8"))
  print(msg.topic + "="+ str(msgRec))
  if msg.topic == "lpg":
-     if msgRec > 0.020:
+     if msgRec > 5.000:
         ser.write(str.encode('LPGBuzzer_ON\r\n'))
      else:
         ser.write(str.encode('LPGBuzzer_OFF\r\n'))   
  if msg.topic == "smoke":
-     if msgRec > 0.020:
-        ser.write(str.encode('LPGBuzzer_ON\r\n'))
+     if msgRec > 20.000:
+        ser.write(str.encode('SMKBuzzer_ON\r\n'))
      else:
-        ser.write(str.encode('LPGBuzzer_OFF\r\n'))
+        ser.write(str.encode('SMKBuzzer_OFF\r\n'))
  if msg.topic == "temperature":
-     if msgRec < 24.00:
+     if msgRec < 25.00:
          ser.write(str.encode('GreenLed_ON\r\n'))
          ser.write(str.encode('YellowLed_OFF\r\n'))
          ser.write(str.encode('RedLED_OFF\r\n'))
-     elif msgRec > 24.00 and msgRec < 25.00 :
+     elif msgRec > 25.00 and msgRec < 30.00 :
          ser.write(str.encode('YellowLed_ON\r\n'))
          ser.write(str.encode('GreenLed_OFF\r\n'))
          ser.write(str.encode('RedLed_OFF\r\n'))
-     elif msgRec > 25.00:
+     elif msgRec > 30.00:
          ser.write(str.encode('RedLed_ON\r\n'))
          ser.write(str.encode('GreenLed_OFF\r\n'))
          ser.write(str.encode('YellowLed_OFF\r\n'))

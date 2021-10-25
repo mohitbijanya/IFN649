@@ -65,6 +65,7 @@ void loop() {
     if(component_componentStatus == "LPGBuzzer_ON")
     {
         digitalWrite(BUZZERLPGPIN, HIGH);
+        tone(BUZZERLPGPIN, 3000,500);
     }
     else if(component_componentStatus == "LPGBuzzer_OFF")
     {
