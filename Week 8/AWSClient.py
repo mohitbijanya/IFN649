@@ -1,9 +1,5 @@
+# havent been tried yet
 import paho.mqtt.client as mqtt
-import serial
-import time
-import string
-
-ser = serial.Serial("/dev/rfcomm8", 9600)
 
 def on_connect(client, userdata, flags, rc): # func for making connection
  print("Connected to MQTT")
@@ -16,10 +12,9 @@ def on_connect(client, userdata, flags, rc): # func for making connection
  
 
 def on_message(client, userdata, msg): # Func for Sending msg
- time.sleep(1)
  print(msg.topic+" "+str(msg.payload))
  msgRec = float(msg.payload.decode("utf-8"))
- 
+
  if msg.topic == "soilmoisture":
      if msgRec > 50.0:
          ser.write(str.encode('RedLed_ON\r\n'))
@@ -39,6 +34,5 @@ def on_message(client, userdata, msg): # Func for Sending msg
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
-client.connect("localhost", 1883, 60)
+client.connect("54.234.134.21", 1883, 60)
 client.loop_forever()
-
